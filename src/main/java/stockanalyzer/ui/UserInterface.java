@@ -44,7 +44,6 @@ public class UserInterface
 		while ((choice = menu.exec()) != null) {
 			 choice.run();
 		}
-		ctrl.closeConnection();
 		System.out.println("Program finished");
 	}
 
