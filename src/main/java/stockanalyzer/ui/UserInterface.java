@@ -21,7 +21,6 @@ public class UserInterface
 	}
 
 	public void getDataFromCtrl2()  {
-
 		try{
 			ctrl.process("MSFT");
 		}		catch (YahooIOException ye){
@@ -35,7 +34,6 @@ public class UserInterface
 		}		catch (YahooIOException ye){
 			System.out.println(ye.getMessage());
 		}
-
 	}
 
 	public void getDataForCustomInput() {
