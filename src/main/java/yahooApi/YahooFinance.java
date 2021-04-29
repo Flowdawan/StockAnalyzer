@@ -31,16 +31,24 @@ public class YahooFinance {
         }
         HttpURLConnection con = null;
         StringBuilder response = new StringBuilder();
+        BufferedReader in = null;
+
         try {
             con = (HttpURLConnection) obj.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
-            in.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                if(in != null)
+                    in.close();
+            } catch(IOException e) {
+                System.out.println("Failed to close file");
+            }
         }
         return response.toString();
     }

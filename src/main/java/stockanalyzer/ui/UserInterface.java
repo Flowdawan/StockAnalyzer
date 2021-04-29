@@ -13,13 +13,13 @@ public class UserInterface
 	private Controller ctrl = new Controller();
 
 	public void getDataFromCtrl1(){
-		ctrl.process("ABC");
+		ctrl.process("CSCO");
 	}
 
-	public void getDataFromCtrl2(){
+	public void getDataFromCtrl2(){ ctrl.process("MSFT");
 	}
 
-	public void getDataFromCtrl3(){
+	public void getDataFromCtrl3(){ ctrl.process("AMZN");
 
 	}
 	public void getDataFromCtrl4(){
@@ -32,13 +32,13 @@ public class UserInterface
 
 
 	public void start() {
-		Menu<Runnable> menu = new Menu<>("User Interfacx");
+		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitel("Wählen Sie aus:");
-		menu.insert("a", "Choice 1", this::getDataFromCtrl1);
-		menu.insert("b", "Choice 2", this::getDataFromCtrl2);
-		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
-		menu.insert("d", "Choice User Imput:",this::getDataForCustomInput);
-		menu.insert("z", "Choice User Imput:",this::getDataFromCtrl4);
+		menu.insert("a", "Choice Cisco Systems, Inc.", this::getDataFromCtrl1);
+		menu.insert("b", "Choice Amazon.com, Inc", this::getDataFromCtrl2);
+		menu.insert("c", "Choice Microsoft Corporation", this::getDataFromCtrl3);
+		menu.insert("d", "Choice User Input:",this::getDataForCustomInput);
+		menu.insert("z", "Choice User Input:",this::getDataFromCtrl4);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {
