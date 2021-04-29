@@ -4,11 +4,9 @@ package stockanalyzer.ctrl;
 //Amazon.com, Inc. (AMZN)
 //Microsoft Corporation (MSFT)
 
+import stockanalyzer.ui.YahooIOException;
 import yahooApi.YahooFinance;
-import yahooApi.beans.Asset;
-import yahooApi.beans.Quote;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +14,8 @@ import java.util.List;
 public class Controller{
 	List<String> myList = new ArrayList<>();
 
-	public void process(String ticker) {
+	public void process(String ticker) throws YahooIOException {
+		/*
 		System.out.println("Start process");
 		YahooFinance yf = (YahooFinance) getData(ticker);
 
@@ -30,27 +29,12 @@ public class Controller{
 		//TODO implement methods for
 		//1) Daten laden
 		//2) Daten Analyse
-
+*/
 	}
 
-
-
 	public Object getData(String searchString) {
-		myList.add(searchString);
-		Quote myQuote = null;
-		YahooFinance yf = null;
-		Asset asset = null;
-		Date date = new Date();
-		yf = new YahooFinance();
-		yf.requestData(myList);
-		asset = new Asset(searchString);
-		myQuote = new Quote(date, 1.1);
-		asset.addQuote(myQuote);
 
-		yf.fetchAssetName(asset);
-
-		System.out.println("Last quuote: " + asset.getLastQuote());
-		return yf;
+		return null;
 	}
 
 }
