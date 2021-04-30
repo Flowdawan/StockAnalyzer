@@ -61,17 +61,6 @@ public class YahooFinance {
         return jo;
     }
 
-    /*
-    public void fetchAssetName(Asset asset) {
-        YahooFinance yahoo = new YahooFinance();
-        List<String> symbols = new ArrayList<>();
-        symbols.add(asset.getSymbol());
-        String jsonResponse = null;
-        jsonResponse = yahoo.requestData(symbols);
-        JsonObject jo = yahoo.convert(jsonResponse);
-        asset.setName(extractName(jo));
-    }
-*/
     private String extractName(JsonObject jo) {
         String returnName = "";
         Map<String, JsonObject> stockData = ((Map) jo.getJsonObject("quoteResponse"));

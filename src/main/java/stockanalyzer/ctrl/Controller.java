@@ -5,18 +5,11 @@ package stockanalyzer.ctrl;
 //Microsoft Corporation (MSFT)
 
 import stockanalyzer.ui.YahooIOException;
-import yahooApi.YahooFinance;
-import yahooApi.beans.QuoteResponse;
-import yahooApi.beans.YahooResponse;
+
 import yahoofinance.Stock;
 import yahoofinance.histquotes.Interval;
-import yahoofinance.quotes.stock.StockDividend;
-import yahoofinance.quotes.stock.StockQuote;
-import yahoofinance.quotes.stock.StockStats;
-
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Controller {
     List<String> myTickers = new ArrayList<>();
