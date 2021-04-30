@@ -9,33 +9,97 @@ import yahooApi.YahooFinance;
 import yahooApi.beans.QuoteResponse;
 import yahooApi.beans.YahooResponse;
 import yahoofinance.Stock;
+import yahoofinance.histquotes.Interval;
+import yahoofinance.quotes.stock.StockDividend;
+import yahoofinance.quotes.stock.StockQuote;
+import yahoofinance.quotes.stock.StockStats;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Controller {
-
     List<String> myTickers = new ArrayList<>();
     Stock stock = null;
+    Calendar calender = null;
 
     public void process(String ticker) throws YahooIOException {
+        //to get the data from the last 10 days
+        calender = Calendar.getInstance();
+        calender.add(Calendar.DAY_OF_WEEK, -11);
         System.out.println("Start process");
 
-        System.out.println(ticker);
+        myTickers.add(ticker);
 
-        System.out.println("--------------Die History der derzeitigen Datensätze:--------------");
+        System.out.println("--------------Der höchste Kurs der letzten 10 Tage von deinen Aktien: --------------");
 
         for (String str : myTickers) {
-            getHighestHistory(str);
+            System.out.println("Aktie: " + str + ", Kurs: " + Math.round(getHighestHistorical(str)*100.0)/100.0);
         }
-        System.out.println("--------------Der durchschnittliche Kurs von deinen Aktien in den letzten 10 Tagen war:--------------");
+
+        System.out.println("--------------Der durchschnittliche Kurs von deinen Aktien in den 10 letzten Tagen:--------------");
+
         for (String str : myTickers) {
-            getHighestHistory(str);
+            System.out.println("Aktie: " + str + ", Kurs: " + Math.round(getAverageHistorical(str)*100.0)/100.0);
+        }
+
+        System.out.println("--------------Die Anzahl der Datensätze in deinen aktien:--------------");
+
+        for (String str : myTickers) {
+            System.out.println("Datensätze von: "+ str +" sind: " + getDataQuantityHistorical(str));
         }
 
 
-       /*
+    }
+
+    public double getHighestHistorical(String myTicker) {
+        double result = 0;
+        try {
+            stock = yahoofinance.YahooFinance.get(myTicker);
+            result = stock.getHistory(calender, Interval.DAILY).stream()
+                    .mapToDouble(value -> value.getClose().doubleValue())
+                    .max()
+                    .orElse(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public double getAverageHistorical(String myTicker) {
+        double result = 0;
+        try {
+            stock = yahoofinance.YahooFinance.get(myTicker);
+            result = stock.getHistory(calender, Interval.DAILY).stream()
+                    .mapToDouble(value -> value.getClose().doubleValue())
+                    .average()
+                    .orElse(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public double getDataQuantityHistorical(String myTicker) {
+        double count = 0;
+        try {
+            stock = yahoofinance.YahooFinance.get(myTicker);
+            count = stock.getHistory().stream()
+                    .count();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return count;
+
+    }
+}
+
+
+
+/*
+
+        This was the old version of the exercise
+
         myTickers.add(ticker);
 
         YahooResponse response = loadData();
@@ -50,39 +114,9 @@ public class Controller {
 
         System.out.println("--------------Die Anzahl der derzeitigen Datensätze:--------------");
         System.out.println(getDataQuantity(myQuotes));
-*/
-    }
 
+        This was for the old version of the exercise too
 
-    public void getHighestHistory(String myTicker) {
-        try {
-            stock = yahoofinance.YahooFinance.get(myTicker);
-            stock.getHistory().forEach(quote -> quote.getDate());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void getAverageHistorical(String myTicker) {
-        try {
-            stock = yahoofinance.YahooFinance.get(myTicker);
-            stock.getHistory().forEach(quote -> System.out.println(quote.getDate().toInstant()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void getDataQuantityHistory(String myTicker) {
-        try {
-            stock = yahoofinance.YahooFinance.get(myTicker);
-            stock.getHistory().forEach(quote -> System.out.println(quote.getDate().toInstant()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-/*
         private YahooResponse loadData () throws YahooIOException {
             YahooFinance yf = new YahooFinance();
             return yf.getCurrentData(myTickers);
@@ -100,5 +134,4 @@ public class Controller {
             quotes.getResult().stream().forEach(quote -> System.out.println());
             return 0;
         }
-
 */
