@@ -12,13 +12,12 @@ import stockanalyzer.ui.YahooIOException;
 import yahoofinance.Stock;
 import yahoofinance.histquotes.Interval;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 
 public class Controller {
-    final SequentialDownloader  sqDownloader = new SequentialDownloader();
-    final ParallelDownloader  parallelDownloader = new ParallelDownloader();
+    final SequentialDownloader sqDownloader = new SequentialDownloader();
+    final ParallelDownloader parallelDownloader = new ParallelDownloader();
 
     List<String> myTickers = new ArrayList<>();
     Stock stock = null;
@@ -28,11 +27,28 @@ public class Controller {
     public void process(String ticker) throws YahooIOException {
         System.out.println("Start process");
         switch (ticker) {
+
+            case "speedTest":
+                List<String> speedList = Arrays.asList("OMV.VI",
+                        "EBS.VI", "DOC.VI", "SBO.VI", "RBI.VI", "VIG.VI", "TKA.VI", "VOE.VI", "FACC.VI", "ANDR.VI", "VER.VI",
+                        "WIE.VI", "CAI.VI", "BG.VI", "POST.VI", "LNZ.VI", "UQA.VI", "SPI.VI", "ATS.VI", "IIA.VI", "AAPL", "UBER", "CSCO", "MSFT");
+                final long timeStart = new Date().getTime();
+                System.out.println("So viele futures gab es: " + downloadTickers(speedList, parallelDownloader));
+                final long timeEnd = new Date().getTime() - timeStart;
+                System.out.println("Laufzeit mit dem Parallel Downloader: " + (timeEnd) + " sek");
+
+                final long timeStart2 = new Date().getTime();
+                downloadTickers(speedList, sqDownloader);
+                final long timeEnd2 = new Date().getTime() - timeStart2;
+                System.out.println("Laufzeit mit dem Sequentiellen Downloader: " + (timeEnd2) + " sek");
+                break;
+
             case "downPa":
+                downloadTickers(myTickers, parallelDownloader);
                 break;
 
             case "downSq":
-                downloadTickers(myTickers);
+                downloadTickers(myTickers, sqDownloader);
                 break;
 
             case "analysis":
@@ -61,9 +77,9 @@ public class Controller {
                 break;
 
             default:
-                if(!myTickers.contains(ticker)){
+                if (!myTickers.contains(ticker)) {
                     myTickers.add(ticker);
-                }else{
+                } else {
                     System.out.println("Der ticket ist schon enthalten!");
                 }
                 System.out.println("Hier eine liste von deinen Tickern: ");
@@ -74,9 +90,8 @@ public class Controller {
     }
 
 
-
-    public void downloadTickers(List<String> myTickers){
-        sqDownloader.process(myTickers);
+    public int downloadTickers(List<String> myTickers, Downloader myDownloader) {
+        return myDownloader.process(myTickers);
         //myTickers.forEach(sqDownloader::saveJson2File);
     }
 

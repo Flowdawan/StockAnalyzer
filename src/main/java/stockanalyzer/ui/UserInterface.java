@@ -69,6 +69,14 @@ public class UserInterface
 		}
 	}
 
+	public void downloadDataSpeed() {
+		try{
+			ctrl.process("speedTest");
+		}		catch (YahooIOException ye){
+			System.out.println(ye.getMessage());
+		}
+	}
+
 	public void start() throws YahooIOException {
 			Menu<Runnable> menu = new Menu<>("User Interface");
 			menu.setTitel("Wählen Sie aus:");
@@ -79,8 +87,10 @@ public class UserInterface
 			menu.insert("e", "Get analysis to your tickers:", this::getAnalysis);
 			menu.insert("f", "Download Data as JSon (sequentiell)", this::downloadDataSq);
 			menu.insert("g", "Download Data as JSon (parallel)", this::downloadDataPa);
+			menu.insert("h", "Download Data as SpeedTest (sequentiell & parallel)", this::downloadDataSpeed);
 
-		menu.insert("q", "Quit", null);
+
+			menu.insert("q", "Quit", null);
 			Runnable choice;
 			while ((choice = menu.exec()) != null) {
 				choice.run();
