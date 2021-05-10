@@ -45,6 +45,29 @@ public class UserInterface
 
 	}
 
+	public void getAnalysis() {
+		try{
+			ctrl.process("analysis");
+		}		catch (YahooIOException ye){
+			System.out.println(ye.getMessage());
+		}
+
+	}
+	public void downloadDataSq() {
+		try{
+			ctrl.process("downSq");
+		}		catch (YahooIOException ye){
+			System.out.println(ye.getMessage());
+		}
+	}
+
+	public void downloadDataPa() {
+		try{
+			ctrl.process("downPa");
+		}		catch (YahooIOException ye){
+			System.out.println(ye.getMessage());
+		}
+	}
 
 	public void start() throws YahooIOException {
 			Menu<Runnable> menu = new Menu<>("User Interface");
@@ -53,7 +76,11 @@ public class UserInterface
 			menu.insert("b", "Choice Amazon.com, Inc", this::getDataFromCtrl2);
 			menu.insert("c", "Choice Microsoft Corporation", this::getDataFromCtrl3);
 			menu.insert("d", "Choice User Input:", this::getDataForCustomInput);
-			menu.insert("q", "Quit", null);
+			menu.insert("e", "Get analysis to your tickers:", this::getAnalysis);
+			menu.insert("f", "Download Data as JSon (sequentiell)", this::downloadDataSq);
+			menu.insert("g", "Download Data as JSon (parallel)", this::downloadDataPa);
+
+		menu.insert("q", "Quit", null);
 			Runnable choice;
 			while ((choice = menu.exec()) != null) {
 				choice.run();
